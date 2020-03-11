@@ -25,7 +25,10 @@ for ind, f1, f4 in df_fitness.itertuples():
 mut_prob_cdc20x1 = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])*1000
 mut_prob_cdc20x4 = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])*1000
 
-# define experiments
+# define and run experiments
+exp_cdc20x1 = Experiment(fitness_cdc20x1_001, mut_prob_cdc20x1, size=1000)
+exp_cdc20x4 = Experiment(fitness_cdc20x4_001, mut_prob_cdc20x4, size=1000)
+
 exp_cdc20x1.run(generations=200)
 exp_cdc20x4.run(generations=200)
 
@@ -43,5 +46,5 @@ for i in range(3):
 ax[0,1].legend(bbox_to_anchor=(1,1))    
 ax[1,1].legend(bbox_to_anchor=(1,1))
 plt.tight_layout(h_pad=0, w_pad=0)
-# plt.savefig(res_folder+'simulation.pdf')
+plt.savefig(res_folder+'simulation.pdf')
 
