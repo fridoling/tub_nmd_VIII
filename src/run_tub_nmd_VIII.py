@@ -17,7 +17,14 @@ res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
 # read fitness data
 fitness_cdc20x1 = np.zeros((2,2,2))
 fitness_cdc20x4 = np.zeros((2,2,2))
-df_fitness = pd.read_csv('src/fitness.csv')
+
+df_fitness = pd.read_csv('../tub_nmd_VIII/src/fitness.csv', dtype={'genotype': str})
+df_fitness.set_index('genotype', inplace=True)
+
+for ind, f1, f4 in df_fitness.itertuples():
+    fitness_cdc20x1[int(ind[0]), int(ind[1]), int(ind[2])] = f1    
+    fitness_cdc20x4[int(ind[0]), int(ind[1]), int(ind[2])] = f4
+
 for ind, f1, f4 in df_fitness.itertuples():
     fitness_cdc20x1[int(ind[0]), int(ind[1]), int(ind[2])] = f1    
     fitness_cdc20x4[int(ind[0]), int(ind[1]), int(ind[2])] = f4
