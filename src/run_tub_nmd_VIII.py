@@ -14,6 +14,8 @@ from tub_nmd_VIII_model import *
 
 
 res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
+if not os.path.isdir('res'):
+    os.mkdir('res')
 os.mkdir(res_folder)
 
 # read fitness data
