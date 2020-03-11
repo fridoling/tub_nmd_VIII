@@ -7,6 +7,7 @@ import shutil
 import pickle
 from datetime import datetime
 import multiprocessing as mp
+import pandas as pd
 
 from tub_nmd_VIII_model import * 
 
