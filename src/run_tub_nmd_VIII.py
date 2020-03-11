@@ -44,19 +44,13 @@ exp_cdc20x4 = Experiment(fitness_cdc20x4, mut_prob_cdc20x4, size=100)
 exp_cdc20x1.run(generations=200)
 exp_cdc20x4.run(generations=200)
 
-# create plots
-fig,ax = plt.subplots(3,2, figsize=(8,7),sharex=True, sharey='row')
+# save data
+res = {}
 for i,exp,title in zip(range(2), [exp_cdc20x1, exp_cdc20x4], ['Cdc20x1', 'Cdc20x4']):
-    exp.plot_genotype_freqs(ax=ax[0,i])
-    ax[0,i].set_xlabel(None)
-    ax[0,i].set_title(title, fontweight='bold')
-    exp.plot_gene_freqs(ax=ax[1,i])
-    ax[1,i].set_xlabel(None)
-    exp.plot_mean_fitness(ax=ax[2,i])
-for i in range(3):
-    ax[i,1].set_ylabel(None)
-ax[0,1].legend(bbox_to_anchor=(1,1))    
-ax[1,1].legend(bbox_to_anchor=(1,1))
-plt.tight_layout(h_pad=0, w_pad=0)
-plt.savefig(res_folder+'simulation.pdf')
+    res[title] = {}
+    res[title]['genotype_freqs'] = exp.get_genotype_freqs()
+    res[title]['gene_freqs'] = exp.get_gene_freqs()
+    res[title]['mean_fitness'] = exp.get_mean_fitness()
 
+with open('res/simulation_data.pickle', 'wb') as f:
+    pickle.dump(res, f)
