@@ -9,10 +9,12 @@ from datetime import datetime
 import multiprocessing as mp
 import pandas as pd
 
+
 from tub_nmd_VIII_model import * 
 
 
 res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
+os.mkdir(res_folder)
 
 # read fitness data
 fitness_cdc20x1 = np.zeros((2,2,2))
@@ -34,8 +36,8 @@ mut_prob_cdc20x1 = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])*1000
 mut_prob_cdc20x4 = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])*1000
 
 # define and run experiments
-exp_cdc20x1 = Experiment(fitness_cdc20x1_001, mut_prob_cdc20x1, size=1000)
-exp_cdc20x4 = Experiment(fitness_cdc20x4_001, mut_prob_cdc20x4, size=1000)
+exp_cdc20x1 = Experiment(fitness_cdc20x1, mut_prob_cdc20x1, size=100)
+exp_cdc20x4 = Experiment(fitness_cdc20x4, mut_prob_cdc20x4, size=100)
 
 exp_cdc20x1.run(generations=200)
 exp_cdc20x4.run(generations=200)
