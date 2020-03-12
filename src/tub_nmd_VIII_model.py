@@ -65,72 +65,22 @@ class Population:
         return(mean_fitness)
 
 class Experiment:
-    def __init__(self, fitness, mut_prob, size=100, **kwargs):
-        self.pops = []
-        self.pops.append(Population(fitness, mut_prob, size=size, **kwargs))
+    def __init__(self, fitness, mut_prob, size=100, generations=1, **kwargs):
+        self.pop = Population(fitness, mut_prob, size=size, **kwargs)
+        self.genotype_freqs = {}
+        labels = map(''.join, product('01', repeat=3))
+        self.genotypes = list(product([0,1], repeat=3))
+        self.labels = list(map(''.join, product('01', repeat=3)))
+        self.genotype_freqs = np.zeros((generations,8))
+        self.gene_freqs = np.zeros((generations, 3))
+        self.mean_fitness = np.zeros(generations)
         self.fitness = fitness
         self.mut_prob = mut_prob
-    def run(self, generations=1, **kwargs):
-        fitness = self.fitness
-        mut_prob = self.mut_prob
-        for i in range(generations):
-            self.pops.append(self.pops[-1].propagate())
-    def get_gene_freqs(self):
-        freq_array = np.zeros((len(self.pops), 3))
-        for i in range(len(self.pops)):
-            freq_array[i,] = self.pops[i].get_gene_freqs()
-        return(freq_array)
-    def get_genotype_freqs(self):
-        labels = map(''.join, product('01', repeat=3))
-        genotypes = product([0,1], repeat=3)
-        genotype_freqs = {}
-        for l, gt in zip(labels, genotypes):
-            freqs_gt = np.zeros(len(self.pops))
-            for i in range(len(self.pops)):
-                freqs_gt[i] = self.pops[i].get_genotype_freq(gt)
-            genotype_freqs[l] = freqs_gt
-        return(genotype_freqs)
-    def get_mean_fitness(self):
-        fitness_array = np.zeros(len(self.pops))
-        for i in range(len(self.pops)):
-            fitness_array[i] = self.pops[i].get_mean_fitness()
-        return(fitness_array)
-    def plot_gene_freqs(self, ax=None, legend=False, **kwargs):
-        gene_freqs = self.get_gene_freqs()
-        if ax is None:
-            for i,label in zip(range(gene_freqs.shape[1]), ['tub', 'nam7', 'VIII']):
-                plt.plot(gene_freqs[:,i], label=label, **kwargs)
-            plt.xlabel('generations')
-            plt.ylabel('allele frequency')
-            if legend:
-                plt.legend()
-        else:
-            for i,label in zip(range(gene_freqs.shape[1]), ['tub', 'nam7', 'VIII']):
-                ax.plot(gene_freqs[:,i], label=label, **kwargs)
-            ax.set_xlabel('generations')
-            ax.set_ylabel('allele frequency')
-            if legend:
-                ax.legend()
-    def plot_genotype_freqs(self, ax=None, legend=False, **kwargs):
-        for key,val in self.get_genotype_freqs().items():
-            if ax is None:
-                plt.plot(val, label=key, **kwargs)
-                plt.xlabel('generations')
-                plt.ylabel('genotype frequency')
-                if legend:
-                    plt.legend(title='genotype\n(tub/nmd/VIII)')
-            else:
-                ax.plot(val, label=key, **kwargs)
-                ax.set_xlabel('generations')
-                ax.set_ylabel('genotype frequency')
-                if legend:
-                    ax.legend(title='genotype\n(tub/nmd/VIII)')                
-    def plot_mean_fitness(self, ax=None, **kwargs):
-        if ax is None:
-            plt.plot(self.get_mean_fitness(), **kwargs)
-            plt.xlabel('generations')
-            plt.ylabel('mean fitness')            
-        else:
-            ax.plot(self.get_mean_fitness(), **kwargs)
-            ax.set_xlabel('generations')
-            ax.set_ylabel('mean fitness')            
+        self.generations = generations
+    def run(self):
+        for i in range(self.generations):
+            for j, gt in zip(range(8), self.genotypes):
+                self.genotype_freqs[i,j] = self.pop.get_genotype_freq(gt)
+            self.gene_freqs[i,] = self.pop.get_gene_freqs()
+            self.mean_fitness[i] = self.pop.get_mean_fitness()
+            self.pop = self.pop.propagate()
