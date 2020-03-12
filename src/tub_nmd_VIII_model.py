@@ -84,3 +84,4 @@ class Experiment:
             self.gene_freqs[i,] = self.pop.get_gene_freqs()
             self.mean_fitness[i] = self.pop.get_mean_fitness()
             self.pop = self.pop.propagate()
+        self.pop = None
