@@ -78,10 +78,23 @@ class Experiment:
         self.mut_prob = mut_prob
         self.generations = generations
     def run(self):
-        for i in range(self.generations):
+        for i in progressbar(range(self.generations), "Computing: ", 40):            
             for j, gt in zip(range(8), self.genotypes):
                 self.genotype_freqs[i,j] = self.pop.get_genotype_freq(gt)
             self.gene_freqs[i,] = self.pop.get_gene_freqs()
             self.mean_fitness[i] = self.pop.get_mean_fitness()
             self.pop = self.pop.propagate()
         self.pop = None
+
+def progressbar(it, prefix="", size=60, file=sys.stdout):
+    count = len(it)
+    def show(j):
+        x = int(size*j/count)
+        file.write("%s[%s%s] %i/%i\r" % (prefix, "#"*x, "."*(size-x), j, count))
+        file.flush()        
+    show(0)
+    for i, item in enumerate(it):
+        yield item
+        show(i+1)
+    file.write("\n")
+    file.flush()
