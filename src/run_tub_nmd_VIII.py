@@ -10,11 +10,14 @@ import multiprocessing as mp
 
 from tub_nmd_VIII_model import * 
 
-
-res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
+if len(sys.argv)>3:
+    res_folder = "./res/"+sys.argv[3]+'/'
+else:
+    res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
 if not os.path.isdir('res'):
     os.mkdir('res')
-os.mkdir(res_folder)
+if not os.path.isdir(res_folder):
+    os.mkdir(res_folder)
 
 # read fitness data
 with open('src/fitness.pickle', 'rb') as f:
@@ -22,8 +25,8 @@ with open('src/fitness.pickle', 'rb') as f:
 
 # define mutation rates
 mut_prob = {}
-mut_prob['cdc20x1'] = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])
-mut_prob['cdc20x4'] = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])
+mut_prob['cdc20x1'] = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])*100
+mut_prob['cdc20x4'] = np.array([[1e-6, 1e-7, 0.001], [1e-7, 1e-5, 0.0001]])*100
 
 # define and run experiments
 res = {}
