@@ -3,6 +3,7 @@
 
 import numpy as np
 import copy
+import sys
 from itertools import product 
 
 class Cell:
