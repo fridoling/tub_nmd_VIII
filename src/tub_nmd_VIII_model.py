@@ -77,6 +77,7 @@ class Experiment:
         self.mean_fitness = np.zeros(generations)
         self.fitness = fitness
         self.mut_prob = mut_prob
+        self.size = size
         self.generations = generations
     def run(self):
         for i in progressbar(range(self.generations), "Computing: ", 40):            
