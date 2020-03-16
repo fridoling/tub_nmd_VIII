@@ -5,3 +5,4 @@ res/
 plots/
 __*
 *.ipynb
+.DS_Store
