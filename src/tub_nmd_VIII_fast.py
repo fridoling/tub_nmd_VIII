@@ -93,7 +93,7 @@ def run_simulation_parallel(n, gt_in, params, label):
     mut_prob = convert_mut(params['mut_prob'][label])
     fitness = convert_fitness(params['fitness'][label])    
     gt[0,:] = gt_in
-    for i in range(1, generations):
+    for i in progressbar(range(1, params['generations']), "Repeat "+str(n+1), 40):    
         gt_mut = mutate(gt[i-1,:], mut_prob)
         gt[i,:] = propagate(gt_mut, fitness)
     return(gt)
