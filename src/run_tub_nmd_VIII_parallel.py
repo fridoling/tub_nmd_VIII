@@ -56,6 +56,7 @@ for label in ['cdc20x1', 'cdc20x4']:
     gf_array = get_gene_freqs3(gt_array)
     mf_array = np.dot(gt_array, convert_fitness(params['fitness'][label]))
     res[label]['genotype_freqs'] = {}
+    res[label]['genotype_freqs']['all'] = gt_array
     res[label]['genotype_freqs']['median'] = np.median(gt_array, axis=0)
     res[label]['genotype_freqs']['upper'] = np.percentile(gt_array, 95, axis=0)
     res[label]['genotype_freqs']['lower'] = np.percentile(gt_array, 5, axis=0)
