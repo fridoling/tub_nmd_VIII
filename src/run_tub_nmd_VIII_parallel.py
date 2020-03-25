@@ -49,9 +49,9 @@ res = {}
 for label in ['cdc20x1', 'cdc20x4']:
     res[label] = {}
     sys.stdout.write('run experiment '+label+'\n')
-    pool = mp.Pool(mp.cpu_count())
+    pool = mp.Pool()
     sys.stdout.write('running '+str(params['repeats'])+' repeats on '+str(mp.cpu_count())+' cores\n')    
-    results = [pool.apply(run_simulation_parallel, args=(n, gt_in, params, label)) for n in range(params['repeats'])]
+    results = pool.starmap(run_simulation_parallel, [(n, gt_in, params, label) for n in range(params['repeats'])])
     pool.close()
     gt_array = np.stack(results)
     gt_array = gt_array/gt_array.sum(axis=2)[:,:,None]
