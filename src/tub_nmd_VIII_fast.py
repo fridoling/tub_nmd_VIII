@@ -87,7 +87,7 @@ def progressbar(it, prefix="", size=60, file=sys.stdout):
     file.flush()
     
 def run_simulation_parallel(n, gt_in, params, label):
-    numpy.random.seed()
+    np.random.seed()
     generations = params['generations']
     gt = np.zeros((generations, 8))
     mut_prob = convert_mut(params['mut_prob'][label])
